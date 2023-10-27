@@ -1,0 +1,153 @@
+[gd_scene load_steps=12 format=3 uid="uid://ca8xcw4hotl5o"]
+
+[ext_resource type="Script" path="res://example/path2dslider/scenes/arc.gd" id="1_k4ean"]
+[ext_resource type="Script" path="res://addons/path2dslider/path2dslider.gd" id="1_tahov"]
+[ext_resource type="Texture2D" uid="uid://be6vw2hk8pvbo" path="res://example/path2dslider/images/backdrop.png" id="2_4q0wf"]
+[ext_resource type="Shader" path="res://example/path2dslider/shader/dropshadow.gdshader" id="2_msikd"]
+[ext_resource type="Texture2D" uid="uid://dinpwu7ywansq" path="res://example/path2dslider/images/marker.png" id="3_b1v47"]
+[ext_resource type="Script" path="res://example/path2dslider/scenes/marker.gd" id="4_01r6l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wtlr0"]
+shader = ExtResource("2_msikd")
+shader_parameter/offset = Vector2(0.0366729, 0.0604574)
+shader_parameter/shadow_alpha = 0.4
+shader_parameter/color = ExtResource("3_b1v47")
+
+[sub_resource type="LabelSettings" id="LabelSettings_n1rj1"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Curve2D" id="Curve2D_a0tdc"]
+_data = {
+"points": PackedVector2Array(-140.049, 542.279, 140.049, -542.279, 58, 512, -137.409, -561.153, 137.409, 561.153, 740, 512)
+}
+point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aftsv"]
+shader = ExtResource("2_msikd")
+shader_parameter/offset = Vector2(0.0384863, 0.0593195)
+shader_parameter/shadow_alpha = 0.4
+shader_parameter/color = ExtResource("3_b1v47")
+
+[sub_resource type="Curve2D" id="Curve2D_nd568"]
+_data = {
+"points": PackedVector2Array(-72.6545, 349.482, 72.6545, -349.482, 209, 512, -73.5332, -345.223, 73.5332, 345.223, 592, 509)
+}
+point_count = 2
+
+[node name="arc" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k4ean")
+num_values = 6
+
+[node name="backdrop" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 200.0
+grow_horizontal = 2
+texture = ExtResource("2_4q0wf")
+
+[node name="outer" type="Control" parent="backdrop"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_tahov")
+marker_start_rotation = 1.5708
+progress_ratio = 1.0
+
+[node name="marker" type="Panel" parent="backdrop/outer"]
+material = SubResource("ShaderMaterial_wtlr0")
+layout_mode = 0
+offset_left = 700.0
+offset_top = 490.0
+offset_right = 780.001
+offset_bottom = 534.0
+rotation = 1.33065
+pivot_offset = Vector2(40, 22)
+script = ExtResource("4_01r6l")
+offset = Vector2(-0.05, 0.05)
+
+[node name="data" type="Label" parent="backdrop/outer/marker"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -18.5
+offset_right = 20.0
+offset_bottom = 18.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "6"
+label_settings = SubResource("LabelSettings_n1rj1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="path" type="Path2D" parent="backdrop/outer"]
+curve = SubResource("Curve2D_a0tdc")
+
+[node name="inner" type="Control" parent="backdrop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_tahov")
+marker_start_rotation = 1.5708
+progress_ratio = 1.0
+
+[node name="marker" type="Panel" parent="backdrop/inner"]
+material = SubResource("ShaderMaterial_aftsv")
+layout_mode = 0
+offset_left = 552.0
+offset_top = 487.0
+offset_right = 632.001
+offset_bottom = 531.001
+rotation = 1.36093
+pivot_offset = Vector2(40, 22)
+script = ExtResource("4_01r6l")
+offset = Vector2(-0.05, 0.05)
+
+[node name="data2" type="Label" parent="backdrop/inner/marker"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -18.5
+offset_right = 20.0
+offset_bottom = 18.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "6"
+label_settings = SubResource("LabelSettings_n1rj1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="path" type="Path2D" parent="backdrop/inner"]
+curve = SubResource("Curve2D_nd568")
+
+[connection signal="changed_progress_ratio" from="backdrop/outer" to="." method="_on_outer_changed_progress_ratio"]
+[connection signal="changed_progress_ratio" from="backdrop/inner" to="." method="_on_inner_changed_progress_ratio"]
