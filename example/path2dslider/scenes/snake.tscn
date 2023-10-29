@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://bv4gdnqa7cxef"]
+
+[ext_resource type="Texture2D" uid="uid://c8632hnsn2vkr" path="res://example/path2dslider/images/snake.png" id="1_g2ooo"]
+[ext_resource type="Script" path="res://example/path2dslider/scenes/snake.gd" id="1_nbids"]
+[ext_resource type="Script" path="res://addons/path2dslider/path2dslider.gd" id="2_k6to4"]
+[ext_resource type="Texture2D" uid="uid://cfeywvpui28ys" path="res://example/path2dslider/images/thumb.png" id="3_nuu3s"]
+
+[sub_resource type="Curve2D" id="Curve2D_q4qxt"]
+_data = {
+"points": PackedVector2Array(-6.24334, 1.18921, 6.24334, -1.18921, 34, 47, -10.6066, -1.41421, 10.6066, 1.41421, 56, 42, -14.4771, 0.445449, 14.4771, -0.445449, 102, 62, -12.4726, -0.668174, 12.4726, 0.668174, 148, 35, -7.79536, -3.78632, 7.79536, 3.78632, 174, 44)
+}
+point_count = 5
+
+[node name="snake" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nbids")
+
+[node name="snake_color_option" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="snake_color_label" type="Label" parent="snake_color_option"]
+layout_mode = 2
+text = "Snake Color:"
+
+[node name="snake_color_config" type="TextureRect" parent="snake_color_option"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("1_g2ooo")
+
+[node name="snake_color_slider" type="Control" parent="snake_color_option/snake_color_config"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_k6to4")
+marker_start_rotation = 1.5708
+
+[node name="path" type="Path2D" parent="snake_color_option/snake_color_config/snake_color_slider"]
+curve = SubResource("Curve2D_q4qxt")
+
+[node name="thumb" type="TextureRect" parent="snake_color_option/snake_color_config/snake_color_slider"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 43.0
+offset_right = 41.0
+offset_bottom = 51.0
+rotation = -0.188221
+pivot_offset = Vector2(7, 4)
+texture = ExtResource("3_nuu3s")
+
+[connection signal="changed_progress_ratio" from="snake_color_option/snake_color_config/snake_color_slider" to="." method="_on_snake_color_slider_changed_progress_ratio"]

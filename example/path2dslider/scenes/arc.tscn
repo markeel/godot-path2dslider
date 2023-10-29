@@ -9,7 +9,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wtlr0"]
 shader = ExtResource("2_msikd")
-shader_parameter/offset = Vector2(0.0366729, 0.0604574)
+shader_parameter/offset = Vector2(-0.0609142, -0.035909)
 shader_parameter/shadow_alpha = 0.4
 shader_parameter/color = ExtResource("3_b1v47")
 
@@ -25,7 +25,7 @@ point_count = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_aftsv"]
 shader = ExtResource("2_msikd")
-shader_parameter/offset = Vector2(0.0384863, 0.0593195)
+shader_parameter/offset = Vector2(-0.0591302, -0.0387765)
 shader_parameter/shadow_alpha = 0.4
 shader_parameter/color = ExtResource("3_b1v47")
 
@@ -45,18 +45,27 @@ grow_vertical = 2
 script = ExtResource("1_k4ean")
 num_values = 6
 
-[node name="backdrop" type="TextureRect" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -100.0
-offset_right = 100.0
-offset_bottom = 200.0
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 630.0
 grow_horizontal = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Example Arc"
+
+[node name="backdrop" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("2_4q0wf")
 
-[node name="outer" type="Control" parent="backdrop"]
+[node name="outer" type="Control" parent="VBoxContainer/backdrop"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -67,21 +76,20 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_tahov")
 marker_start_rotation = 1.5708
-progress_ratio = 1.0
 
-[node name="marker" type="Panel" parent="backdrop/outer"]
+[node name="marker" type="Panel" parent="VBoxContainer/backdrop/outer"]
 material = SubResource("ShaderMaterial_wtlr0")
 layout_mode = 0
-offset_left = 700.0
+offset_left = 18.0
 offset_top = 490.0
-offset_right = 780.001
+offset_right = 98.0009
 offset_bottom = 534.0
-rotation = 1.33065
+rotation = -1.31806
 pivot_offset = Vector2(40, 22)
 script = ExtResource("4_01r6l")
 offset = Vector2(-0.05, 0.05)
 
-[node name="data" type="Label" parent="backdrop/outer/marker"]
+[node name="data" type="Label" parent="VBoxContainer/backdrop/outer/marker"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -95,15 +103,15 @@ offset_right = 20.0
 offset_bottom = 18.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "6"
+text = "0"
 label_settings = SubResource("LabelSettings_n1rj1")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="path" type="Path2D" parent="backdrop/outer"]
+[node name="path" type="Path2D" parent="VBoxContainer/backdrop/outer"]
 curve = SubResource("Curve2D_a0tdc")
 
-[node name="inner" type="Control" parent="backdrop"]
+[node name="inner" type="Control" parent="VBoxContainer/backdrop"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,21 +121,20 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_tahov")
 marker_start_rotation = 1.5708
-progress_ratio = 1.0
 
-[node name="marker" type="Panel" parent="backdrop/inner"]
+[node name="marker" type="Panel" parent="VBoxContainer/backdrop/inner"]
 material = SubResource("ShaderMaterial_aftsv")
 layout_mode = 0
-offset_left = 552.0
-offset_top = 487.0
-offset_right = 632.001
-offset_bottom = 531.001
-rotation = 1.36093
+offset_left = 169.0
+offset_top = 490.0
+offset_right = 249.001
+offset_bottom = 534.001
+rotation = -1.36583
 pivot_offset = Vector2(40, 22)
 script = ExtResource("4_01r6l")
 offset = Vector2(-0.05, 0.05)
 
-[node name="data2" type="Label" parent="backdrop/inner/marker"]
+[node name="data2" type="Label" parent="VBoxContainer/backdrop/inner/marker"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -141,13 +148,13 @@ offset_right = 20.0
 offset_bottom = 18.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "6"
+text = "0"
 label_settings = SubResource("LabelSettings_n1rj1")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="path" type="Path2D" parent="backdrop/inner"]
+[node name="path" type="Path2D" parent="VBoxContainer/backdrop/inner"]
 curve = SubResource("Curve2D_nd568")
 
-[connection signal="changed_progress_ratio" from="backdrop/outer" to="." method="_on_outer_changed_progress_ratio"]
-[connection signal="changed_progress_ratio" from="backdrop/inner" to="." method="_on_inner_changed_progress_ratio"]
+[connection signal="changed_progress_ratio" from="VBoxContainer/backdrop/outer" to="." method="_on_outer_changed_progress_ratio"]
+[connection signal="changed_progress_ratio" from="VBoxContainer/backdrop/inner" to="." method="_on_inner_changed_progress_ratio"]

@@ -1,0 +1,44 @@
+1
+00:00:14,700 --> 00:00:35,833
+Add slider control as child of TextureRect which provided the background
+
+2
+00:00:40,833 --> 00:00:51,600
+Add Path2D child to slider
+
+3
+00:00:51,600 --> 00:01:57,333
+Add points along path where the slide control should move
+
+4
+00:02:02,333 --> 00:02:13,033
+Adding a TextureRect as the control that slides
+
+5
+00:02:13,033 --> 00:02:31,666
+Change size to minimum and add texture for thumb
+
+6
+00:02:31,666 --> 00:02:39,900
+Set rotation direction of texture
+
+7
+00:02:39,900 --> 00:02:56,800
+Set pivot point of thumb
+
+8
+00:02:56,800 --> 00:03:01,900
+Change progress ratio to force thumb to reset to path
+
+9
+00:03:01,900 --> 00:03:14,533
+Slider moves in editor when changing progress_ratio
+
+10
+00:03:19,533 --> 00:03:53,966
+Add connection from changed_progress_ratio to application to change snake color
+
+11
+00:03:58,966 --> 00:04:02,466
+Mouse drag on thumb follows path
+
