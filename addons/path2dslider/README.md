@@ -1,7 +1,7 @@
 # Path2DSlider plugin
 
-A plugin for Godot 4 to have a slider control that follows a Path2D instead of being
-horizontal or vertical (like HSlider or VSlider are)
+A plugin for Godot 4 to have a slider control that follows a Path2D instead of 
+being horizontal or vertical (like HSlider or VSlider are)
 
 ## Usage
 
