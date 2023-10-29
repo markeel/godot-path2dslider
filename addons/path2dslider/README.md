@@ -1,11 +1,33 @@
-# PSlider plugin
+# Path2DSlider plugin
 
 A plugin for Godot 4 to have a slider control that follows a Path2D instead of being
 horizontal or vertical (like HSlider or VSlider are)
 
-## Overview
+## Usage
 
-TBD
+This plugin works by using a Path2D child of the Path2DSlider control to define the path
+from beginning to end.  The value is expressed in the property "progress_ratio".  It always
+goes from 0 to 1.  To present the "thumb" (the graphic used to click on and drag the value 
+from beginning to end) another control (of any type) must be attached as another child of
+the Path2DSlider control.  
+
+Note that the position of the "thumb" control will be based on the pivot_offset specified, so that
+the rotation point and the point along the path will match.
+
+It will always choose the last control as the one to use as the "thumb" but it doesn't make 
+much sense to have more than the Path2D and "thumb" control as children of the Path2DSlider. 
+
+A typical use case is to put the slider on top of a backdrop using something like TextureRect
+that would look like the "trough" that the slider would go along.  Both examples in the examples
+directory use that technique.
+
+Once those 2 children have been added you can change the "progress_ratio" property in the Inspector
+and it will change in the editor.  When the scene is running clicking on the "thumb" control will 
+allow the "thumb" to be moved from the beginning to the end.
+
+There is a signal emitted when the "progress_ratio" changes so that the application can react to 
+changes.
+
 
 ## Installation
 
@@ -23,6 +45,7 @@ To install it from the Godot Asset Library, within your project:
 There are 3 main directories
 - addons/path2dslider
 - examples/path2dslider
+- source/path2dslider
 
 When loading as an asset in another project (as opposed to working on this asset) the following files
 should NOT be imported, they will likely conflict with your project
@@ -32,12 +55,8 @@ should NOT be imported, they will likely conflict with your project
 - icon.svg.import
 - project.godot
 
-After using this asset, the examples/path2dslider folder can be removed so as not
+After using this asset, the examples/path2dslider and source/path2dslider folder can be removed so as not
 to pollute your project.
-
-## Usage
-
-TBD
 
 ## Examples
 

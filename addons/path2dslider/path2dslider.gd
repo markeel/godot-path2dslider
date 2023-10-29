@@ -17,7 +17,6 @@ class_name Path2DSlider
 			_position_marker(progress_ratio * blen)
 			changed_progress_ratio.emit(progress_ratio)
 
-var _points : PackedVector2Array
 var _curve : Curve2D
 var _marker : Control
 var _dragging := false
@@ -49,18 +48,14 @@ func _analyze_children():
 			_position_marker(progress_ratio * blen)
 		update_configuration_warnings()
 	if old_curve != _curve:
-		if _curve == null:
-			_points = PackedVector2Array()
-		else:
+		if _curve != null:
 			_curve.changed.connect(_on_curve_changed)
-			_points = _curve.tessellate_even_length()
 		var blen = _curve.get_baked_length()
 		_position_marker(progress_ratio * blen)
 		update_configuration_warnings()
 
 func _on_curve_changed():
 	var blen = _curve.get_baked_length()
-	_points = _curve.tessellate_even_length()
 	_position_marker(progress_ratio * blen)
 
 func _position_marker(value):
@@ -74,7 +69,7 @@ func _on_marker_gui_input(event):
 	if _dragging:
 		if event is InputEventMouseMotion:
 			var mouseevent = event as InputEventMouseMotion
-			var mousepos_local = get_global_transform().inverse() * mouseevent.global_position
+			var mousepos_local = get_global_transform().affine_inverse() * mouseevent.global_position
 			var blen = _curve.get_baked_length()
 			var offset = _curve.get_closest_offset(mousepos_local)
 			progress_ratio = offset / blen
