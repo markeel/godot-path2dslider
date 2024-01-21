@@ -2,6 +2,14 @@
 extends Control
 class_name Path2DSlider
 
+@export var editable : bool :
+	set(e):
+		editable = e
+		if !editable:
+			if _dragging:
+				_dragging = false
+				editing_completed.emit()
+
 @export_range(0, 360, 0.001, "radians") var marker_start_rotation : float = 0.0 :
 	set(r):
 		marker_start_rotation = r
@@ -15,13 +23,18 @@ class_name Path2DSlider
 		if is_inside_tree() and _curve != null:
 			var blen = _curve.get_baked_length()
 			_position_marker(progress_ratio * blen)
-			changed_progress_ratio.emit(progress_ratio)
 
 var _curve : Curve2D
 var _marker : Control
 var _dragging := false
 
-signal changed_progress_ratio(ratio)
+# Fix GH-4 - Changed signal to only fire on user changes 
+signal user_changed_progress_ratio(ratio)
+signal editing_started
+signal editing_completed
+
+func is_editing() -> bool:
+	return _dragging
 
 func _ready():
 	get_tree().node_added.connect(_on_scene_nodes_changed)
@@ -66,20 +79,24 @@ func _position_marker(value):
 		_marker.set_rotation(r)
 
 func _on_marker_gui_input(event):
-	if _dragging:
-		if event is InputEventMouseMotion:
-			var mouseevent = event as InputEventMouseMotion
-			var mousepos_local = get_global_transform().affine_inverse() * mouseevent.global_position
-			var blen = _curve.get_baked_length()
-			var offset = _curve.get_closest_offset(mousepos_local)
-			progress_ratio = offset / blen
-	if event is InputEventMouseButton:
-		var mouseevent = event as InputEventMouseButton
-		if mouseevent.button_index == MOUSE_BUTTON_LEFT:
-			if mouseevent.is_pressed():
-				_dragging = true
-			elif mouseevent.is_released():
-				_dragging = false
+	if editable:
+		if _dragging:
+			if event is InputEventMouseMotion:
+				var mouseevent = event as InputEventMouseMotion
+				var mousepos_local = get_global_transform().affine_inverse() * mouseevent.global_position
+				var blen = _curve.get_baked_length()
+				var offset = _curve.get_closest_offset(mousepos_local)
+				progress_ratio = offset / blen
+				user_changed_progress_ratio.emit(progress_ratio)
+		if event is InputEventMouseButton:
+			var mouseevent = event as InputEventMouseButton
+			if mouseevent.button_index == MOUSE_BUTTON_LEFT:
+				if mouseevent.is_pressed():
+					_dragging = true
+					editing_started.emit()
+				elif mouseevent.is_released():
+					_dragging = false
+					editing_completed.emit()
 
 func _get_configuration_warnings():
 	var errors := PackedStringArray()
